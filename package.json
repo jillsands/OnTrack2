@@ -1,7 +1,7 @@
 {
   "name": "ontrack",
   "version": "1.0.0",
-  "description": "User enters nearest train station -> i show station details (parking, etc.) routes supported, and next trains \"use my current location\" uses geolocation api \"routes supported\" shows each stop on hover/click?",
+  "description": "",
   "main": "OnTrack.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
