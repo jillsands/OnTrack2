@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:false}));
 const portNumber = 4444; 
 
-console.log("Server running at http://localhost:4444")
+console.log("Server running at: http://localhost:4444, deployed at: https://ontrack-3p50.onrender.com")
 
 /* Establishing Mongo connection, DB is pre-populated with station info */
 require("dotenv").config({ path: path.resolve(__dirname, ".env")})
