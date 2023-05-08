@@ -16,10 +16,12 @@ console.log("Server running at: http://localhost:4444, deployed at: https://ontr
 require("dotenv").config({ path: path.resolve(__dirname, ".env")})
 const userName = process.env.MONGO_DB_USERNAME; // taken from the .env file
 const password = process.env.MONGO_DB_PASSWORD;
-const databaseAndCollection = {db: process.env.MONGO_DB_NAME, collection: process.env.MONGO_COLLECTION};
+const databaseAndCollection = { db: process.env.MONGO_DB_NAME, 
+                                collection: process.env.MONGO_COLLECTION };
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${userName}:${password}@cluster0.w3o8kiy.mongodb.net/?retryWrites=true&w=majority`
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const client = new MongoClient(uri, 
+                                { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 /* ROUTES */
 app.get("/", async (request, response) => {

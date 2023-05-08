@@ -13,7 +13,7 @@ form {
 }
 
 img {
-    width: 50%;
+    width: 45%;
     height: auto;
 }
 
@@ -27,4 +27,5 @@ input[type="submit"] {
     background: #436a96;
     color: #f0f0f0;
     padding: 10px 40px;
+    margin-bottom: 40px;
 }

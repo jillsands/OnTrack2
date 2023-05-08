@@ -55,8 +55,8 @@ h3 {
 
 img {
     position: fixed;
-    width: 40%;
-    height: auto;
+    height: 75vh;
+    width: auto;
     border: solid .4vw #436a96;
 }
 
