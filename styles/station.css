@@ -1,0 +1,117 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f8fa;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 300;
+    margin: 2%;
+}
+
+h1 {
+    color: #436a96;
+    margin: 0;
+}
+
+h4 {
+    margin-top: 0;
+}
+
+h3 {
+    margin-bottom: 2px;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.centered {
+    align-items: center;
+}
+
+.column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 49%;
+    margin: 3px;
+    
+}
+
+#img-magnifier-glass {
+    visibility: hidden; 
+    position: absolute;
+    border: 1px solid #436a96;
+    cursor: none;
+    width: 17vw;
+    height: 13vh;
+    background-image: url(../images/MetroMap.jpg);
+    background-repeat: no-repeat;
+    box-shadow: 0px 10px 7px #436a96;
+    z-index: 3;
+}
+
+img {
+    position: fixed;
+    width: 40%;
+    height: auto;
+    border: solid .4vw #436a96;
+}
+
+.chevron {
+    width: 20px; 
+}
+
+.filled {
+    line-height: 10px;
+    border-radius: 50px;
+    width: 40px;
+    color: #f5f8fa;
+    text-align: center;
+    font-weight: bold;
+    margin: 3px;
+    padding: 5px 2px 2px;
+}
+
+.minsLabel {
+    font-size: .5em;
+}
+
+.caret {
+    width: 10px;
+}
+
+.stopsList {
+    margin: 1% 0 1% 10%;
+}
+
+span.RD {
+    background: red;
+}
+
+span.SV {
+    background: gray;
+}
+
+span.BL {
+    background: #1a6aaf;
+}
+
+span.YL {
+    background: yellow;
+}
+
+span.OR {
+    background: #fd8b1c;
+}
+
+span.GR {
+    background: green;
+}
+
+a {
+    color: #436a96;
+    font-weight: 500;
+}
