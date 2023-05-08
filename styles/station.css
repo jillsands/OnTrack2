@@ -46,7 +46,7 @@ h3 {
     border: 1px solid #436a96;
     cursor: none;
     width: 17vw;
-    height: 13vh;
+    height: 15vh;
     background-image: url(../images/MetroMap.jpg);
     background-repeat: no-repeat;
     box-shadow: 0px 10px 7px #436a96;
@@ -100,7 +100,7 @@ span.BL {
 }
 
 span.YL {
-    background: yellow;
+    background: #ffcc00;
 }
 
 span.OR {
