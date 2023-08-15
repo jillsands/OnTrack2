@@ -1,0 +1,101 @@
+.stationContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f8fa;
+    font-weight: 300;
+    padding: 2%;
+    min-height: 100vh
+}
+
+h1 {
+    color: #436a96;
+    margin: 0;
+}
+
+h4 {
+    margin-top: 0;
+}
+
+h3 {
+    margin-bottom: 8px;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+    justify-content: center;
+}
+
+.centered {
+    align-items: center;
+}
+
+.column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 3px 20px;
+}
+
+.list {
+    align-items: flex-start;
+}
+
+.chevron {
+    width: 20px; 
+}
+
+.filled {
+    line-height: 10px;
+    border-radius: 50px;
+    width: 40px;
+    color: #f5f8fa;
+    text-align: center;
+    font-weight: bold;
+    margin: 3px;
+    padding: 5px 2px 2px;
+}
+
+.minsLabel {
+    font-size: .5em;
+}
+
+.caret {
+    width: 10px;
+}
+
+.path {
+    display: none;
+    margin: 1% 0 1% 10%;
+}
+
+span.RD {
+    background: red;
+}
+
+span.SV {
+    background: gray;
+}
+
+span.BL {
+    background: #1a6aaf;
+}
+
+span.YL {
+    background: #ffcc00;
+}
+
+span.OR {
+    background: #fd8b1c;
+}
+
+span.GR {
+    background: green;
+}
+
+a {
+    color: #436a96;
+    font-weight: 500;
+}

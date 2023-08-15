@@ -1,0 +1,19 @@
+#img-magnifier-glass {
+    visibility: hidden; 
+    position: absolute;
+    border: 1px solid #436a96;
+    border-radius: 75px;
+    cursor: none;
+    width: 17vw;
+    height: 15vh;
+    background-image: url(../images/MetroMap.png);
+    background-repeat: no-repeat;
+    box-shadow: 0px 10px 7px #436a96;
+    z-index: 3;
+}
+
+#metroMap {
+    width: 50vw;
+    height: auto;
+    border: solid .4vw #436a96;
+}
