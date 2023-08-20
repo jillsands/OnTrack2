@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./components.css";
 
 type Props = {
@@ -6,31 +6,36 @@ type Props = {
 };
 
 const ImageMagnifier = ({ imageSrc }: Props) => {
-  const img = document.getElementById("metroMap");
-  const glass = document.getElementById("img-magnifier-glass");
-  const zoom = 2.75;
+  const ZOOM = 2.75;
+  let img = useRef<HTMLElement | null>();
+  let glass = useRef<HTMLElement | null>();
 
   useEffect(() => {
-    /* Set zoom for the magnifier glass */
-    if (img instanceof HTMLImageElement && glass) {
-      glass.style.backgroundSize =
-        img.width * zoom + "px " + img.height * zoom + "px";
+    img.current = document.getElementById("metroMap");
+    glass.current = document.getElementById("magnifierGlass");
 
+    if (
+      glass.current instanceof HTMLElement &&
+      img.current instanceof HTMLImageElement
+    ) {
       /* Show/hide magnifier */
-      glass.addEventListener("mousemove", moveMagnifier);
-      img.addEventListener("mousemove", moveMagnifier);
-      glass.addEventListener(
+      glass.current.addEventListener("mousemove", moveMagnifier);
+      img.current.addEventListener("mousemove", moveMagnifier);
+      glass.current.addEventListener(
         "mouseout",
-        () => (glass.style.visibility = "hidden")
+        () => ((glass.current as HTMLElement).style.visibility = "hidden")
       );
     }
-  });
+  }, []);
 
-  function moveMagnifier(e: MouseEvent) {
-    if (img instanceof HTMLImageElement && glass) {
+  const moveMagnifier = (e: MouseEvent) => {
+    if (
+      glass.current instanceof HTMLElement &&
+      img.current instanceof HTMLImageElement
+    ) {
       const bw = 3;
-      const w = glass.offsetWidth / 2;
-      const h = glass.offsetHeight / 2;
+      const w = glass.current.offsetWidth / 2;
+      const h = glass.current.offsetHeight / 2;
 
       e.preventDefault();
 
@@ -38,40 +43,40 @@ const ImageMagnifier = ({ imageSrc }: Props) => {
       let x = pos.x;
       let y = pos.y;
 
-      if (x > img.width - w / zoom) {
-        x = img.width - w / zoom;
+      if (x > img.current.width - w / ZOOM) {
+        x = img.current.width - w / ZOOM;
       }
-      if (x < w / zoom) {
-        x = w / zoom;
+      if (x < w / ZOOM) {
+        x = w / ZOOM;
       }
-      if (y > img.height - h / zoom) {
-        y = img.height - h / zoom;
+      if (y > img.current.height - h / ZOOM) {
+        y = img.current.height - h / ZOOM;
       }
-      if (y < h / zoom) {
-        y = h / zoom;
+      if (y < h / ZOOM) {
+        y = h / ZOOM;
       }
 
       /* Set the position of the magnifier glass: */
-      glass.style.left = x - w + "px";
-      glass.style.top = y - h + "px";
+      glass.current.style.left = x - w + "px";
+      glass.current.style.top = y - h + "px";
 
       /* Display what the magnifier glass sees */
-      glass.style.visibility = "visible";
-      glass.style.backgroundPosition =
-        "-" + (x * zoom - w + bw) + "px -" + (y * zoom - h + bw) + "px";
+      glass.current.style.visibility = "visible";
+      glass.current.style.backgroundPosition =
+        "-" + (x * ZOOM - w + bw) + "px -" + (y * ZOOM - h + bw) + "px";
     }
-  }
+  };
 
-  function getCursorPos(e: MouseEvent) {
+  const getCursorPos = (e: MouseEvent) => {
     let a,
       x = 0,
       y = 0;
 
-    if (img instanceof HTMLImageElement) {
+    if (img.current instanceof HTMLImageElement) {
       e = e || window.event;
 
       /* Get the x and y positions of the image: */
-      a = img.getBoundingClientRect();
+      a = img.current.getBoundingClientRect();
 
       /* Calculate the cursor's x and y coordinates, relative to the image: */
       x = e.pageX - a.left;
@@ -84,12 +89,28 @@ const ImageMagnifier = ({ imageSrc }: Props) => {
     } else {
       return { x: 0, y: 0 };
     }
-  }
+  };
+
+  /* Set zoom for the magnifier glass */
+  const handleImgLoad = () => {
+    if (
+      glass.current instanceof HTMLElement &&
+      img.current instanceof HTMLImageElement
+    ) {
+      glass.current.style.backgroundSize =
+        img.current.width * ZOOM + "px " + img.current.height * ZOOM + "px";
+    }
+  };
 
   return (
     <>
-      <div id="img-magnifier-glass"> </div>
-      <img id="metroMap" src={imageSrc} alt="WMATA Metro map" />
+      <div id="magnifierGlass"> </div>
+      <img
+        id="metroMap"
+        src={imageSrc}
+        alt="WMATA Metro map"
+        onLoad={handleImgLoad}
+      />
     </>
   );
 };

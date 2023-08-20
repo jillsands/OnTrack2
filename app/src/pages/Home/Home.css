@@ -1,32 +1,35 @@
-.formContainer {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #F0F8FF;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 300;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
+.homeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.alertPanel {
+  height: 97vh;
+  background-color: white;
+  width: 70%;
+  overflow-y: scroll;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+
 .logoImg {
-    width: 35%;
-    height: auto;
-  }
-  
-  input {
-    font-family: 'Nunito', sans-serif;
-  }
-  
-  input[type="submit"] {
-    border: none;
-    border-radius: 30px;
-    background: #436a96;
-    color: #f0f0f0;
-    padding: 10px 40px;
-    margin-bottom: 40px;
-  }
+  width: 65%;
+  height: auto;
+}
+
+input {
+  font-family: Gill Sans, sans-serif;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  border: none;
+  border-radius: 30px;
+  background: #436a96;
+  color: #f0f0f0;
+  padding: 10px 40px;
+  margin-bottom: 40px;
+}

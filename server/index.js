@@ -2,6 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const axiosRetry = require("axios-retry");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const app = express();
@@ -14,7 +15,6 @@ const REQUEST_HEADER = {
 };
 
 const PORT_NUMBER = process.env.PORT || 4444;
-console.log(`Server running at: http://localhost:${PORT_NUMBER}`);
 
 /* Establishing Mongo connection, DB is pre-populated with station info */
 require("dotenv").config();
@@ -32,11 +32,17 @@ const client = new MongoClient(uri, {
   },
 });
 
+/* Setting up axios-retry */
+axiosRetry(axios, {
+  retries: 3, // number of retries
+  retryDelay: (retryCount) => 2000, // wait 2 seconds between retries
+  retryCondition: (error) => error.response.status === 429, // code for 'Too Many Requests'
+});
+
 /* API */
 app.get("/api/stations", async (request, response) => {
   try {
     await client.connect();
-    console.log("connected");
     const cursor = client
       .db(process.env.MONGO_DB_NAME)
       .collection(process.env.MONGO_COLLECTION)
@@ -61,7 +67,7 @@ app.post("/stations", async (request, response) => {
 });
 
 const getAvailableParking = async (stationCode) => {
-  let parkingInfo = await axios.get(
+  const parkingInfo = await axios.get(
     `https://api.wmata.com/Rail.svc/json/jStationParking?StationCode=${stationCode}`,
     { headers: REQUEST_HEADER }
   );
@@ -89,8 +95,8 @@ const getIncomingTrains = async (stationCode, lines) => {
       let destinationCode = train.DestinationCode;
       if (!destinationCode) {
         const cursor = await client
-          .db(databaseAndCollection.db)
-          .collection(databaseAndCollection.collection)
+          .db(process.env.MONGO_DB_NAME)
+          .collection(process.env.MONGO_COLLECTION)
           .findOne({ name: train.DestinationName });
         destinationCode = cursor.code;
       }
@@ -135,4 +141,26 @@ app.get("/api/stations/:code", async (request, response) => {
   }
 });
 
+app.get("/api/alerts", async (request, response) => {
+  const alerts = await axios.get(
+    `https://api.wmata.com/Incidents.svc/json/Incidents`,
+    {
+      headers: REQUEST_HEADER,
+    }
+  );
+
+  const incidents = alerts.data.Incidents.map((incident) => {
+    const { DateUpdated, Description, IncidentType, LinesAffected } = incident;
+    return {
+      DateUpdated,
+      Description,
+      IncidentType,
+      LinesAffected: LinesAffected.split(";").filter((fn) => fn !== ""),
+    };
+  });
+
+  response.json({ incidents });
+});
+
 app.listen(PORT_NUMBER);
+console.log(`Server running at: http://localhost:${PORT_NUMBER}`);

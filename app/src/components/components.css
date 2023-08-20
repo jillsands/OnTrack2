@@ -1,19 +1,99 @@
-#img-magnifier-glass {
-    visibility: hidden; 
-    position: absolute;
-    border: 1px solid #436a96;
-    border-radius: 75px;
-    cursor: none;
-    width: 17vw;
-    height: 15vh;
-    background-image: url(../images/MetroMap.png);
-    background-repeat: no-repeat;
-    box-shadow: 0px 10px 7px #436a96;
-    z-index: 3;
+/* Image Magnifier */
+#magnifierGlass {
+  visibility: hidden;
+  position: absolute;
+  border: 1px solid #436a96;
+  border-radius: 75px;
+  cursor: none;
+  width: 12em;
+  height: 12em;
+  background-image: url(../images/MetroMap.png); /* TODO: update to work with any image passed in props */
+  background-repeat: no-repeat;
+  box-shadow: 0px 10px 7px #436a96;
+  z-index: 3;
 }
 
 #metroMap {
-    width: 50vw;
-    height: auto;
-    border: solid .4vw #436a96;
+  width: 50vw;
+  height: auto;
+  border: solid 4px #436a96;
+}
+
+/* AlertPane */
+#AlertPane {
+  margin-top: 8px;
+  display: grid;
+  row-gap: 16px;
+  /* grid-auto-rows: 1fr; */
+}
+
+.alertHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 400;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.Alert,
+.Delay {
+  border-radius: 30px;
+  padding: 16px;
+  max-width: 40vw;
+  box-shadow: -2px 2px 5px #aeb4ba;
+  display: flex;
+  flex-direction: column;
+}
+
+.Alert {
+  border: solid 4px #df5757;
+  background: rgba(223, 87, 87, 0.2);
+}
+
+.Delay {
+  border: solid 4px #fccd30;
+  background: rgba(252, 205, 48, 0.3);
+}
+
+.timePassed {
+  float: right;
+}
+
+.centeredFlex {
+  display: flex;
+  align-items: center;
+}
+
+strong {
+  font-size: 20px;
+}
+strong.RD {
+  color: #df5757;
+}
+
+strong.SV {
+  color: gray;
+}
+
+strong.BL {
+  color: #1a6aaf;
+}
+
+strong.YL {
+  color: #ffcc00;
+}
+
+strong.OR {
+  color: #fd8b1c;
+}
+
+strong.GR {
+  color: green;
+}
+
+/* LoadingPage */
+.loadingContainer {
+  height: 90vh;
+  justify-content: center;
 }

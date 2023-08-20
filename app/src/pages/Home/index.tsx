@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import AlertPane from "../../components/AlertPane";
+
 import logo from "../../images/Logo.png";
 
-import "./Home.css";
+import "./home.css";
 
 type Station = {
   name: string;
@@ -20,18 +22,23 @@ function Home() {
   }, []);
 
   return (
-    <div className="formContainer">
-      <img className="logoImg" src={logo} alt="logo"></img>
-      <p> Enter the nearest train station </p>
-      <form action="/stations" method="post">
-        <input id="stationInput" list="stations" name="stationCode" /> <br />
-        <datalist id="stations">
-          {stations?.map((station) => (
-            <option value={station.code} label={station.name} />
-          ))}
-        </datalist>
-        <input className="button" type="submit" value="Get Information" />
-      </form>
+    <div className="homeContainer">
+      <div className="column">
+        <img className="logoImg" src={logo} alt="logo"></img>
+        <p> Enter the nearest train station </p>
+        <form action="/stations" method="post">
+          <input id="stationInput" list="stations" name="stationCode" /> <br />
+          <datalist id="stations">
+            {stations?.map((station, i) => (
+              <option value={station.code} label={station.name} key={i} />
+            ))}
+          </datalist>
+          <input className="button" type="submit" value="Get Information" />
+        </form>
+      </div>
+      <div className="column alertPanel">
+        <AlertPane />
+      </div>
     </div>
   );
 }
