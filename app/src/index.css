@@ -13,11 +13,6 @@ h4 {
   font-weight: 600;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
 .row {
   display: flex;
   flex-direction: row;
@@ -26,6 +21,10 @@ code {
 
 .centered {
   align-items: center;
+}
+
+.space-around {
+  justify-content: space-around;
 }
 
 .column {

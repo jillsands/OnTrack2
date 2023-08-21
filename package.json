@@ -24,7 +24,6 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
-    "typescript": "^5.1.6"
+    "concurrently": "^8.2.0"
   }
 }

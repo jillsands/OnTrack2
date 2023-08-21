@@ -64,35 +64,33 @@ const AlertPane = ({ lines }: Props) => {
   };
 
   return (
-    <div id="AlertPane">
-      {alerts.map((alert, i) => (
-        // Check if lines match
-        <div className={alert.IncidentType} key={i}>
-          <div className="alertHeader">
-            {alert.IncidentType === "Delay" ? (
+    <div id="alertPane">
+      {alerts.map(({DateUpdated, Description, IncidentType, LinesAffected}, i) => (
+        <div className={IncidentType} key={i}>
+          <div id="alertHeader">
+            {IncidentType === "Delay" ? (
               <span className="centeredFlex">
                 <HiClock color="#fccd30" /> &nbsp; Delay
               </span>
             ) : (
               <span className="centeredFlex">
-                <PiWarningFill color="DF5757" /> &nbsp; {alert.IncidentType}
+                <PiWarningFill color="DF5757" /> &nbsp; {IncidentType}
               </span>
             )}
             <span>
-              {alert.LinesAffected.map((line, i) => (
+              {LinesAffected.map((line, i) => (
                 <strong className={line} key={i}>
-                  {" "}
-                  &#9679;{" "}
+                  &#9679;
                 </strong>
               ))}
-              {alert.LinesAffected.join(", ")}
-              &nbsp;line {alert.LinesAffected.length === 1 ? "" : "s"}
+              {LinesAffected.join(", ")}
+              &nbsp;line {LinesAffected.length === 1 ? "" : "s"}
             </span>
             <span className="timePassed">
-              {calculateTimePassed(alert.DateUpdated)}
+              {calculateTimePassed(DateUpdated)}
             </span>
           </div>
-          <div>{alert.Description}</div>
+          <div>{Description}</div>
         </div>
       ))}
     </div>

@@ -87,12 +87,15 @@ function Station() {
           &nbsp; {DestinationName}
         </div>
         <div id={`path${i}`} className="path">
-          {PathToDestination?.map(({ StationCode, StationName }, i) => (
-            <div key={i}>
-              <span className={`${Line} filled`} />
-              <a href={`/stations/${StationCode}`}> {StationName} </a> <br />
-            </div>
-          ))}
+          {PathToDestination
+            ? PathToDestination.map(({ StationCode, StationName }, i) => (
+                <div key={i}>
+                  <span className={`${Line} filled`} />
+                  <a href={`/stations/${StationCode}`}> {StationName} </a>{" "}
+                  <br />
+                </div>
+              ))
+            : "Error retrieving path to destination "}
         </div>
       </div>
     ));
@@ -111,7 +114,7 @@ function Station() {
           </span>
         ))}
       </p>
-      <div className="row">
+      <div className="row space-around">
         <div className="column list">
           <h3> Arriving Trains </h3>
           {nextTrains?.length === 0

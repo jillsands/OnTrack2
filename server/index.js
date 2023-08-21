@@ -3,8 +3,12 @@ const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const bodyParser = require("body-parser");
 const express = require("express");
-const path = require("path");
 const { MongoClient, ServerApiVersion } = require("mongodb");
+
+require("dotenv").config();
+
+const USERNAME = process.env.MONGO_DB_USERNAME;
+const PASSWORD = process.env.MONGO_DB_PASSWORD;
 
 const REQUEST_HEADER = {
   api_key: "c55e8989aa3c4bcd9deb248baf620a03",
@@ -12,12 +16,8 @@ const REQUEST_HEADER = {
 
 const PORT_NUMBER = process.env.PORT || 4444;
 
-const USERNAME = process.env.MONGO_DB_USERNAME;
-const PASSWORD = process.env.MONGO_DB_PASSWORD;
-
 const app = express();
 
-app.use(express.static(__dirname + "/../app/public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /* Set middleware of CORS  */
@@ -42,8 +42,6 @@ app.use((request, response, next) => {
 });
 
 /* Establishing Mongo connection, DB is pre-populated with station info */
-require("dotenv").config();
-
 const uri = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.w3o8kiy.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -58,7 +56,7 @@ const client = new MongoClient(uri, {
 /* Setting up axios-retry */
 axiosRetry(axios, {
   retries: 3, // number of retries
-  retryDelay: (retryCount) => 2000, // wait 2 seconds between retries
+  retryDelay: () => 2000, // wait 2 seconds between retries
   retryCondition: (error) => error.response.status === 429, // code for 'Too Many Requests'
 });
 
@@ -81,14 +79,7 @@ app.get("/api/stations", async (request, response) => {
   }
 });
 
-/* Redirects to prettier url */
-app.post("/stations", async (request, response) => {
-  /* Note: Gallery Place, Fort Totten, L'Enfant Plaza, and
-     Metro Center have multiple platforms, thus multiple station codes */
-  const stationCode = request.body.stationCode;
-  response.redirect(`stations/${stationCode}`);
-});
-
+// Note: I think this WMATA API is down :(. Been returning empty results for over a week
 const getAvailableParking = async (stationCode) => {
   const parkingInfo = await axios.get(
     `https://api.wmata.com/Rail.svc/json/jStationParking?StationCode=${stationCode}`,
@@ -103,7 +94,7 @@ const getIncomingTrains = async (stationCode, lines) => {
   const nextTrainsResponse = await axios.get(
     `https://api.wmata.com/StationPrediction.svc/json/GetPrediction/${linesServiced}`,
     {
-      params: { stationCode: stationCode },
+      params: { stationCode },
       headers: REQUEST_HEADER,
     }
   );
@@ -121,7 +112,12 @@ const getIncomingTrains = async (stationCode, lines) => {
           .db(process.env.MONGO_DB_NAME)
           .collection(process.env.MONGO_COLLECTION)
           .findOne({ name: train.DestinationName });
-        destinationCode = cursor.code;
+
+        if (cursor) {
+          destinationCode = cursor.code;
+        } else {
+          return { ...train };
+        }
       }
 
       const pathToDestResponse = await axios.get(
@@ -155,6 +151,7 @@ app.get("/api/stations/:code", async (request, response) => {
     // Incoming Trains
     const nextTrains = await getIncomingTrains(stationCode, station.lines);
 
+    // TODO: add catch for invalid station code (and other errors from above)
     response.json({ station, parkingInfo, nextTrains });
   } catch (e) {
     console.error(e);
@@ -187,7 +184,7 @@ app.get("/api/alerts", async (request, response) => {
 
 /* Handles any requests that don't match the ones above */
 app.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname + "/../app/public/index.html"));
+  response.sendStatus(404);
 });
 
 app.listen(PORT_NUMBER);

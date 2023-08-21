@@ -14,20 +14,20 @@
 }
 
 #metroMap {
-  width: 50vw;
-  height: auto;
+  height: 70vh;
+  width: auto;
   border: solid 4px #436a96;
 }
 
 /* AlertPane */
-#AlertPane {
+#alertPane {
   margin-top: 8px;
   display: grid;
   row-gap: 16px;
   /* grid-auto-rows: 1fr; */
 }
 
-.alertHeader {
+#alertHeader {
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -56,10 +56,6 @@
   background: rgba(252, 205, 48, 0.3);
 }
 
-.timePassed {
-  float: right;
-}
-
 .centeredFlex {
   display: flex;
   align-items: center;
@@ -68,6 +64,7 @@
 strong {
   font-size: 20px;
 }
+
 strong.RD {
   color: #df5757;
 }
@@ -81,7 +78,7 @@ strong.BL {
 }
 
 strong.YL {
-  color: #ffcc00;
+  color: #fccd30;
 }
 
 strong.OR {
