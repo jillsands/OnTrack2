@@ -13,6 +13,10 @@ import "./station.css";
 
 import type StationData from "./types";
 
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://ontrack-3p50.onrender.com"
+    : "";
 const MINUTE_MS = 60000;
 
 function Station() {
@@ -30,7 +34,7 @@ function Station() {
   }, []);
 
   const fetchStationData = () => {
-    fetch(`/api/stations/${stationCode}`)
+    fetch(`${BASE_URL}/api/stations/${stationCode}`)
       .then((res) => res.json())
       .then((data) => {
         setStationData(data);

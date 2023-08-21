@@ -1,14 +1,10 @@
 /* Server Set Up */
-const express = require("express");
-const bodyParser = require("body-parser");
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
+const bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path");
 const { MongoClient, ServerApiVersion } = require("mongodb");
-
-const app = express();
-
-app.use(express.static(__dirname + "/"));
-app.use(bodyParser.urlencoded({ extended: false }));
 
 const REQUEST_HEADER = {
   api_key: "c55e8989aa3c4bcd9deb248baf620a03",
@@ -16,12 +12,39 @@ const REQUEST_HEADER = {
 
 const PORT_NUMBER = process.env.PORT || 4444;
 
+const USERNAME = process.env.MONGO_DB_USERNAME;
+const PASSWORD = process.env.MONGO_DB_PASSWORD;
+
+const app = express();
+
+app.use(express.static(__dirname + "/../app/public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+/* Set middleware of CORS  */
+app.use((request, response, next) => {
+  response.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://ontrack-tkib.onrender.com"
+  );
+  response.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
+  );
+  response.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
+  response.setHeader("Access-Control-Allow-Credentials", true);
+  response.setHeader("Access-Control-Allow-Private-Network", true);
+  response.setHeader("Access-Control-Max-Age", 7200);
+
+  next();
+});
+
 /* Establishing Mongo connection, DB is pre-populated with station info */
 require("dotenv").config();
-const username = process.env.MONGO_DB_USERNAME;
-const password = process.env.MONGO_DB_PASSWORD;
 
-const uri = `mongodb+srv://${username}:${password}@cluster0.w3o8kiy.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.w3o8kiy.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -160,6 +183,11 @@ app.get("/api/alerts", async (request, response) => {
   });
 
   response.json({ incidents });
+});
+
+/* Handles any requests that don't match the ones above */
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname + "/../app/public/index.html"));
 });
 
 app.listen(PORT_NUMBER);

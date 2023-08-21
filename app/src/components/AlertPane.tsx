@@ -5,6 +5,10 @@ import { PiWarningFill } from "react-icons/pi";
 
 import type Incident from "./types";
 
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://ontrack-3p50.onrender.com"
+    : "";
 const MINUTE_MS = 60000;
 
 type Props = {
@@ -24,7 +28,7 @@ const AlertPane = ({ lines }: Props) => {
   }, []);
 
   const fetchAlerts = () => {
-    fetch(`/api/alerts`)
+    fetch(`${BASE_URL}/api/alerts`)
       .then((res) => res.json())
       .then((data) => {
         setAlerts(

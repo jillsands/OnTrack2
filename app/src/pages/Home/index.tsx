@@ -5,6 +5,11 @@ import logo from "../../images/Logo.png";
 
 import "./home.css";
 
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://ontrack-3p50.onrender.com"
+    : "";
+
 type Station = {
   name: string;
   code: string;
@@ -16,7 +21,7 @@ function Home() {
   const [stations, setStations] = useState<Array<Station>>([]);
 
   useEffect(() => {
-    fetch("/api/stations")
+    fetch(`${BASE_URL}/api/stations`)
       .then((res) => res.json())
       .then((data) => setStations(data.stations));
   }, []);
