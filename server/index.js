@@ -169,13 +169,24 @@ app.get("/api/alerts", async (request, response) => {
     }
   );
 
-  const incidents = alerts.data.Incidents.map((incident) => {
+  const validLines = ["GR", "YL", "SV", "OR", "RD", "BL"];
+
+  const incidents = alerts.data.Incidents.filter(({ LinesAffected }) => {
+    const validLinesAffected = LinesAffected.split(";").filter((line) =>
+      validLines.includes(line)
+    );
+
+    return validLinesAffected.length >= 1;
+  }).map((incident) => {
     const { DateUpdated, Description, IncidentType, LinesAffected } = incident;
+
     return {
       DateUpdated,
       Description,
       IncidentType,
-      LinesAffected: LinesAffected.split(";").filter((fn) => fn !== ""),
+      LinesAffected: LinesAffected.split(";").filter((line) =>
+        validLines.includes(line)
+      ),
     };
   });
 

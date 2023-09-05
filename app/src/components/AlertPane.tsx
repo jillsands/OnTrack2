@@ -65,34 +65,40 @@ const AlertPane = ({ lines }: Props) => {
 
   return (
     <div id="alertPane">
-      {alerts.map(({DateUpdated, Description, IncidentType, LinesAffected}, i) => (
-        <div className={IncidentType} key={i}>
-          <div id="alertHeader">
-            {IncidentType === "Delay" ? (
-              <span className="centeredFlex">
-                <HiClock color="#fccd30" /> &nbsp; Delay
-              </span>
-            ) : (
-              <span className="centeredFlex">
-                <PiWarningFill color="DF5757" /> &nbsp; {IncidentType}
-              </span>
-            )}
-            <span>
-              {LinesAffected.map((line, i) => (
-                <strong className={line} key={i}>
-                  &#9679;
-                </strong>
-              ))}
-              {LinesAffected.join(", ")}
-              &nbsp;line {LinesAffected.length === 1 ? "" : "s"}
-            </span>
-            <span className="timePassed">
-              {calculateTimePassed(DateUpdated)}
-            </span>
-          </div>
-          <div>{Description}</div>
-        </div>
-      ))}
+      {alerts.length === 0 ? (
+        <h3> No alerts to display </h3>
+      ) : (
+        alerts.map(
+          ({ DateUpdated, Description, IncidentType, LinesAffected }, i) => (
+            <div className={IncidentType} key={i}>
+              <div id="alertHeader">
+                {IncidentType === "Delay" ? (
+                  <span className="centeredFlex">
+                    <HiClock color="#fccd30" /> &nbsp; Delay
+                  </span>
+                ) : (
+                  <span className="centeredFlex">
+                    <PiWarningFill color="DF5757" /> &nbsp; {IncidentType}
+                  </span>
+                )}
+                <span>
+                  {LinesAffected.map((line, i) => (
+                    <strong className={line} key={i}>
+                      &#9679;
+                    </strong>
+                  ))}
+                  {LinesAffected.join(", ")}
+                  &nbsp;line{LinesAffected.length === 1 ? "" : "s"}
+                </span>
+                <span className="timePassed">
+                  {calculateTimePassed(DateUpdated)}
+                </span>
+              </div>
+              <div>{Description}</div>
+            </div>
+          )
+        )
+      )}
     </div>
   );
 };

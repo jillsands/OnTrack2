@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ImageMagnifier from "../../components/ImageMagnifier";
 import AlertPane from "../../components/AlertPane";
@@ -26,12 +26,13 @@ function Station() {
   const { station = {}, parkingInfo = [], nextTrains = [] } = stationData;
 
   useEffect(() => {
+    setLoading(true);
     fetchStationData();
 
     // Refresh data every minute
     const interval = setInterval(() => fetchStationData(), MINUTE_MS);
     return () => clearInterval(interval);
-  }, []);
+  }, [stationCode]);
 
   const fetchStationData = () => {
     fetch(`${BASE_URL}/api/stations/${stationCode}`)
@@ -91,7 +92,10 @@ function Station() {
             ? PathToDestination.map(({ StationCode, StationName }, i) => (
                 <div key={i}>
                   <span className={`${Line} filled`} />
-                  <a href={`/stations/${StationCode}`}> {StationName} </a>{" "}
+                  <Link to={`/stations/${StationCode}`}>
+                    {" "}
+                    {StationName}{" "}
+                  </Link>{" "}
                   <br />
                 </div>
               ))
